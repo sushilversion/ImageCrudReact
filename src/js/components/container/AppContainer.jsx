@@ -10,6 +10,7 @@ import { PrivateRoute } from './PrivateRoute.jsx';
 import { HomePage } from './HomePage.jsx';
 import { AdminPage } from './AdminPage.jsx';
 import { LoginPage } from './LoginPage.jsx';
+import { Dashboard } from './Dashboard.jsx';
 
 export default class AppContainer extends React.Component {
     constructor(props) {
@@ -42,6 +43,8 @@ export default class AppContainer extends React.Component {
                         <nav className="navbar navbar-expand navbar-dark bg-dark">
                             <div className="navbar-nav">
                                 <Link to="/" className="nav-item nav-link">Home</Link>
+                                <Link to="/dashboard" className="nav-item nav-link">Dashboard</Link>
+
                                 {isAdmin && <Link to="/admin" className="nav-item nav-link">Admin</Link>}
                                 <a onClick={this.logout} className="nav-item nav-link">Logout</a>
                             </div>
@@ -52,6 +55,7 @@ export default class AppContainer extends React.Component {
                             <div className="row">
                                 <div className="col-md-6 offset-md-3">
                                     <PrivateRoute exact path="/" component={HomePage} />
+                                    <PrivateRoute exact path="/dashboard" component={Dashboard} />
                                     <PrivateRoute path="/admin" roles={[Role.Admin]} component={AdminPage} />
                                     <Route path="/login" component={LoginPage} />
                                 </div>

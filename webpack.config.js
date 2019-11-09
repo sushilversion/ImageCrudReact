@@ -1,5 +1,13 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+var path = require('path');
 module.exports = {
+  // entry: './src/index.js',
+
+  // output: {
+  //   path: path.resolve(__dirname, 'dist'),
+  //   filename: 'main.js',
+  //   publicPath: '/'
+  // },
   module: {
     rules: [
       {
@@ -19,12 +27,13 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-            'style-loader',
-            'css-loader'
-          ]
+        use: ["style-loader", "css-loader"]
       }
     ]
+  },
+  
+  devServer: {
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebPackPlugin({
@@ -35,7 +44,7 @@ module.exports = {
   externals: {
     // global app config object
     config: JSON.stringify({
-        apiUrl: 'http://localhost:4000'
+      apiUrl: "http://localhost:4000"
     })
-}
+  }
 };
