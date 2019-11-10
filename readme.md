@@ -1,13 +1,6 @@
+References:
 https://www.valentinog.com/blog/babel/
+https://jasonwatmore.com/post/2019/02/01/react-role-based-authorization-tutorial-with-example
 
-npm i webpack --save-dev
-
-npm i webpack-cli --save-dev
-
-"build": "webpack --mode production"
-
-npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
-
-{
-  "presets": ["@babel/preset-env", "@babel/preset-react"]
-}
+npm start; // development mode
+npm run build; // production
