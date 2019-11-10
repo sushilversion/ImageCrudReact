@@ -11,6 +11,8 @@ import { HomePage } from './HomePage.jsx';
 import { AdminPage } from './AdminPage.jsx';
 import { LoginPage } from './LoginPage.jsx';
 import { Dashboard } from './Dashboard.jsx';
+import { CreateComponent } from './CreateComponent.jsx';
+import { EditComponent } from './EditComponent.jsx';
 
 export default class AppContainer extends React.Component {
     constructor(props) {
@@ -38,7 +40,7 @@ export default class AppContainer extends React.Component {
         const { currentUser, isAdmin } = this.state;
         return (
             <Router history={history}>
-                <div>
+                <div className="col-md-12">
                     {currentUser &&
                         <nav className="navbar navbar-expand navbar-dark bg-dark">
                             <div className="navbar-nav">
@@ -50,19 +52,21 @@ export default class AppContainer extends React.Component {
                             </div>
                         </nav>
                     }
-                    <div className="jumbotron">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-md-6 offset-md-3">
+                        <div className="col-md-6 offset-md-3">
+                                <div >
                                     <PrivateRoute exact path="/" component={HomePage} />
                                     <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                                    <PrivateRoute exact path="/create" component={CreateComponent} />
+                                    <PrivateRoute exact path="/edit" component={EditComponent} />
+
                                     <PrivateRoute path="/admin" roles={[Role.Admin]} component={AdminPage} />
                                     <Route path="/login" component={LoginPage} />
+                                    {/* <Route exact path='/create' component={ Create } />
+                                     <Route path='/edit/:id' component={ Edit } /> */}
                                 </div>
                             </div>
-                        </div>
+                        
                     </div>
-                </div>
             </Router>
         );
     }

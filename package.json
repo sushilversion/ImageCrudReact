@@ -25,9 +25,16 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
+    "axios": "^0.19.0",
+    "bootstrap": "^4.3.1",
+    "bootstrap-daterangepicker": "^3.0.5",
+    "daterangepicker": "^3.0.5",
     "formik": "^2.0.3",
     "react": "^16.11.0",
+    "react-bootstrap": "^1.0.0-beta.14",
+    "react-datepicker": "^2.10.0",
     "react-dom": "^16.11.0",
+    "react-dropdown": "^1.6.4",
     "react-router-dom": "^5.1.2",
     "rxjs": "^6.5.3",
     "yup": "^0.27.0"
