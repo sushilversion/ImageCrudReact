@@ -12,7 +12,8 @@ class Dashboard extends React.Component {
       currentUser: authenticationService.currentUserValue,
       openAddRoute:false,
       userFromApi: null,
-      imageRecordList:[]
+      imageRecordList:[],
+      positionAvailable:false
     };
     this.deleteImageRecord = this.deleteImageRecord.bind(this);
     // this.editImageRecord = this.editImageRecord.bind(this);
@@ -52,6 +53,8 @@ class Dashboard extends React.Component {
    // userService.getById(currentUser.id).then(userFromApi => this.setState({ userFromApi }));
    //productService.getAll().then(imageRecordList => this.setState({ imageRecordList }))
    this.setState({imageRecordList:productService.getAll()});
+   this.setState({positionAvailable: (productService.getAllPositions().length>0)?true:false})
+
   }
 
   render() {
@@ -65,6 +68,7 @@ class Dashboard extends React.Component {
         } */}
 
         <DisplayListComponent
+          positionAvailable={this.state.positionAvailable}
           imageList={this.state.imageRecordList}
           deleteImageRecord= {this.deleteImageRecord}
          />

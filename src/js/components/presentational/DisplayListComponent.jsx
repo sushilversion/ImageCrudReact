@@ -28,12 +28,12 @@ const renderTableData = ({ imageList, deleteImageRecord }) => (
   })
 );
 
-const DisplayListComponent = ({ imageList, deleteImageRecord }) => (
+const DisplayListComponent = ({ positionAvailable,imageList, deleteImageRecord }) => (
   <div>
     <div className="row">
         {/* <button className="button normal-button" onClick={addImageRecord}></button> */}
         
-        {true && <Link to={"/create"}  className="btn btn-primary" >Add Record</Link>}
+        {positionAvailable && <Link to={"/create"}  className="btn btn-primary" >Add Record</Link>}
 
         {/* <Link to='/add-record'>Add Record</Link> */}
 
@@ -64,6 +64,7 @@ const DisplayListComponent = ({ imageList, deleteImageRecord }) => (
 
 
 DisplayListComponent.propTypes = {
+  positionAvailable:PropTypes.bool.isRequired,
   imageList: PropTypes.arrayOf(PropTypes.exact({
     pos: PropTypes.number,
     title: PropTypes.string,

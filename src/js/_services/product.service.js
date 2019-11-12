@@ -7,7 +7,6 @@ export const productService = {
     getById,
     pushRecord,
     getAllPositions,
-    getAvailablePositions,
     getAllStatus
 };
 const imageRecordList=[]
@@ -40,9 +39,7 @@ const status = [
 function getAllPositions() {
     return positions;
 }
-function getAvailablePositions() {
-    return positions;
-}
+
 function getAllStatus() {
     return status;
 }
