@@ -53,9 +53,10 @@ export default class AppContainer extends React.Component {
                         </nav>
                     }
                         <div className="col-md-6 offset-md-3">
-                                <div >
+                                
                                     <PrivateRoute exact path="/" component={HomePage} />
                                     <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                                    
                                     <PrivateRoute exact path="/create" component={CreateComponent} />
                                     <PrivateRoute exact path="/edit" component={EditComponent} />
 
@@ -64,7 +65,6 @@ export default class AppContainer extends React.Component {
                                     {/* <Route exact path='/create' component={ Create } />
                                      <Route path='/edit/:id' component={ Edit } /> */}
                                 </div>
-                            </div>
                         
                     </div>
             </Router>

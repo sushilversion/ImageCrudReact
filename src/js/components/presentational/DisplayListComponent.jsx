@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
 
 
-const renderTableData = ({ imageList, editImageRecord, deleteImageRecord }) => (
+const renderTableData = ({ imageList, deleteImageRecord }) => (
 
   imageList.map((record, index) => {
-    const { pos, title, status, startDate, endDate } = record //destructuring
+    const { pos, title, status, startDate, endDate , picture} = record //destructuring
     return (
       <tr key={pos}>
         <td>{pos}</td>
@@ -14,6 +14,9 @@ const renderTableData = ({ imageList, editImageRecord, deleteImageRecord }) => (
         <td>{status}</td>
         <td>{startDate}</td>
         <td>{endDate}</td>
+        <td>{picture}</td>
+
+        
         <td>
 
           <Link to={"/edit"} className="btn btn-primary ml-3">Edit</Link>
@@ -25,11 +28,11 @@ const renderTableData = ({ imageList, editImageRecord, deleteImageRecord }) => (
   })
 );
 
-const DisplayListComponent = ({ imageList, addImageRecord, editImageRecord, deleteImageRecord }) => (
+const DisplayListComponent = ({ imageList, deleteImageRecord }) => (
   <div>
     <div className="row">
         {/* <button className="button normal-button" onClick={addImageRecord}></button> */}
-        <Link to={"/create"} className="btn btn-primary">Add Record</Link>
+        <Link to={"/create"}  className="btn btn-primary" >Add Record</Link>
 
         {/* <Link to='/add-record'>Add Record</Link> */}
 
@@ -46,11 +49,12 @@ const DisplayListComponent = ({ imageList, addImageRecord, editImageRecord, dele
             <th key={2}>Status</th>
             <th key={3}>Start Date</th>
             <th key={4}>End Date</th>
-            <th key={5}>Actions</th>
+            <th key={5}>Picture</th>
+            <th key={6}>Actions</th>
             {/* {renderTableHeader({imageList})} */}
           </tr>
 
-          {renderTableData({ imageList, editImageRecord, deleteImageRecord })}
+          {renderTableData({ imageList, deleteImageRecord })}
         </tbody>
       </table>
     </div>
@@ -64,11 +68,10 @@ DisplayListComponent.propTypes = {
     title: PropTypes.string,
     status: PropTypes.string,
     startDate: PropTypes.string,
-    endDate: PropTypes.string
+    endDate: PropTypes.string,
+    picture: PropTypes.string
 
   })).isRequired,
-  editImageRecord: PropTypes.func.isRequired,
   deleteImageRecord: PropTypes.func.isRequired,
-  addImageRecord: PropTypes.func.isRequired,
 };
 export default DisplayListComponent;

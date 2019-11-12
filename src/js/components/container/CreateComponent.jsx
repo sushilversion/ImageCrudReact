@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { userService } from '../../_services/user.service';
+//import { userService } from '../../_services/user.service';
 import { authenticationService } from '../../_services/authentication.service';
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { productService } from '../../_services/product.service';
+
 //import ImageUploader from 'react-images-upload';
 
 
@@ -15,61 +17,90 @@ class CreateComponent extends React.Component {
         super(props);
 
         this.state = {
-            currentUser: authenticationService.currentUserValue,
-            userFromApi: null,
+            positions:[],
+            statuslist:[],
+            pos: -1,
+            title:'',
+            status:'',
             startDate: new Date(),
             endDate: new Date(),
-            pictures: [],
+            // pictures: [],
             picture: null
         };
 
-        this._onSelect = this._onSelect.bind(this);
+        this._onSelectPos = this._onSelectPos.bind(this);
         this._onSelectStatus = this._onSelectStatus.bind(this);
         this._onStartDate = this._onStartDate.bind(this);
         this._onEndDate = this._onEndDate.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
-        
+        this.onChangeTitle=this.onChangeTitle.bind(this);
 
     }
+    onChangeTitle(event){
+        this.setState({title:event.target.value});
 
+    }
     onDrop(picture) {
         // this.setState({
         //     pictures: this.state.pictures.concat(picture),
         // });
-        this.setState({ picture });
+        console.log(picture.target.files[0].name);
+
+        this.setState({ picture: picture.target.files[0].name });
+
     }
     componentDidMount() {
-        const { currentUser } = this.state;
+        const positions=productService.getAllPositions();
+        const statuslist =productService.getAllStatus();
+        this.setState({positions});
+        this.setState({statuslist });
+
+        this.setState({pos:positions[0].value});
+        this.setState({status:statuslist[0].value});
         //  userService.getById(currentUser.id).then(userFromApi => this.setState({ userFromApi }));
     }
 
     //for dropdown position
-    _onSelect(e) {
+    _onSelectPos(event) {
+        console.log(event);
+        
+        this.setState({pos:event.value});
 
     }
 
     //for dropdown status
-    _onSelectStatus(e) {
-
+    _onSelectStatus(statusval) {
+        this.setState({status:statusval});
     }
 
     _onStartDate(startDate) {
+        // console.log('Startdate',startDate);
+        // console.log('StartdateString',startDate.toLocaleDateString());
+        
         this.setState({ startDate });
 
 
     }
     _onEndDate(endDate) {
-        this.setState({ endDate });
+        this.setState({ endDate});
 
     }
 
 
-    onSubmit(e){
+    onSubmit(e) {
         e.preventDefault();
+        const record={ "pos": this.state.pos, 
+        "title": this.state.title,
+         "status": this.state.status,
+          "startDate": this.state.startDate.toLocaleDateString(),
+           "endDate": this.state.endDate.toLocaleDateString(),
+            "picture": this.state.picture};
+
+       
         // const formData = new FormData();
-        // formData.append('myImage',this.state.file);
+        // formData.append('myImage', this.state.picture);
         // const config = {
         //     headers: {
         //         'content-type': 'multipart/form-data'
@@ -80,27 +111,20 @@ class CreateComponent extends React.Component {
         //         alert("The file is successfully uploaded");
         //     }).catch((error) => {
         // });
+        console.log('onSubmit Invoked: ',record);
+        //TODO: Validation for records
+        productService.pushRecord(record);
+        // history.goBack;
+        this.props.history.goBack();
     }
 
 
     render() {
         //  const { currentUser, userFromApi } = this.state;
-        const positions = [
-            { value: 1, label: 1 },
-            { value: 2, label: 2 },
-            { value: 3, label: 3 },
-            { value: 4, label: 4 },
-            { value: 5, label: 5 }
+       
 
-        ]
-        const status = [
-            { value: 'Active', label: 'Active' },
-            { value: 'Inactive', label: 'Inactive' }
-
-        ]
-
-        const defaultPosition = positions[0] //set for next available pos
-        const defaultStatus = status[0] //set for next available pos
+        //this.setState({pos:defaultPosition})
+       // const defaultStatus = status[0] //set for next available pos
 
         return (
 
@@ -109,7 +133,7 @@ class CreateComponent extends React.Component {
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Select Position:  </label>
-                        <Dropdown options={positions} onChange={this._onSelect} value={defaultPosition} placeholder="Select an option" />
+                        <Dropdown options={this.state.positions} onChange={this._onSelectPos} value={this.state.positions[0]} placeholder="Select an option" />
                     </div>
 
                     <div className="form-group">
@@ -117,15 +141,15 @@ class CreateComponent extends React.Component {
                         <input
                             type="text"
                             className="form-control"
-                            value={this.state.person_name}
-                            onChange={this.onChangePersonName}
+                            
+                            onChange={this.onChangeTitle}
                         />
                     </div>
                     <div className="form-group">
                         <label>Status: </label>
-                        <Dropdown options={status}
+                        <Dropdown options={this.state.statuslist}
                             onChange={this._onSelectStatus}
-                            value={defaultStatus}
+                            value={this.state.statuslist[0]}
                             placeholder="Select an option"
                         />
                     </div>
@@ -146,9 +170,9 @@ class CreateComponent extends React.Component {
 
                     <div className="form-group">
                         <label>Image Upload: </label>
-                        <input type="file" name="myImage" 
-                        onChange= {this.onDrop}
-                        className="form-control"
+                        <input type="file" name="myImage"
+                            onChange={this.onDrop}
+                            className="form-control"
                         />
                         {/* <ImageUploader
                 withIcon={true}

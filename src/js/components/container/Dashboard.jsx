@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { userService } from '../../_services/user.service';
+import { productService } from '../../_services/product.service';
 import { authenticationService } from '../../_services/authentication.service';
 import DisplayListComponent from "../presentational/DisplayListComponent.jsx";
 
@@ -12,17 +12,17 @@ class Dashboard extends React.Component {
       currentUser: authenticationService.currentUserValue,
       openAddRoute:false,
       userFromApi: null,
-      imageRecordList:[{ "pos": 1, "title": "Image 1", "status": "Active", "startDate": "12/08/2019", "endDate": "15/08/2019" },
-      { "pos": 2, "title": "Image 2", "status": "Active", "startDate": "12/08/2019", "endDate": "15/08/2019" },
-      { "pos": 3, "title": "Image 3", "status": "Active", "startDate": "12/08/2019", "endDate": "15/08/2019" },
-      { "pos": 4, "title": "Image 4", "status": "Active", "startDate": "12/08/2019", "endDate": "15/08/2019" },
-      { "pos": 5, "title": "Image 5", "status": "Active", "startDate": "12/08/2019", "endDate": "15/08/2019" }]
+      imageRecordList:[]
     };
     this.deleteImageRecord = this.deleteImageRecord.bind(this);
-    this.editImageRecord = this.editImageRecord.bind(this);
-    this.addImageRecord = this.addImageRecord.bind(this);
+    // this.editImageRecord = this.editImageRecord.bind(this);
+    // this.addImageRecord = this.addImageRecord.bind(this);
 
-
+    this.onRecordAdded= this.onRecordAdded.bind(this);
+  }
+  onRecordAdded(){
+    console.log('Prop invoked');
+    
   }
 
   deleteImageRecord(event) {
@@ -30,26 +30,28 @@ class Dashboard extends React.Component {
     
 
   }
-  editImageRecord(event) {
-    console.log(event);
+  // editImageRecord(event) {
+  //   console.log(event);
 
-  }
+  // }
 
-  addImageRecord(event) {
-    console.log('Add Image Invoked');
+  // addImageRecord(event) {
+  //   console.log('Add Image Invoked');
     
-    console.log(event);
+  //   console.log(event);
 
-    // this.setState({openAddRoute:true})
+  //   // this.setState({openAddRoute:true})
 
-    // return <Redirect to="/dashboard" />;
+  //   // return <Redirect to="/dashboard" />;
 
-  }
+  // }
 
 
   componentDidMount() {
     const { currentUser } = this.state;
-    userService.getById(currentUser.id).then(userFromApi => this.setState({ userFromApi }));
+   // userService.getById(currentUser.id).then(userFromApi => this.setState({ userFromApi }));
+   //productService.getAll().then(imageRecordList => this.setState({ imageRecordList }))
+   this.setState({imageRecordList:productService.getAll()});
   }
 
   render() {
@@ -64,10 +66,8 @@ class Dashboard extends React.Component {
 
         <DisplayListComponent
           imageList={this.state.imageRecordList}
-          editImageRecord={this.editImageRecord}
           deleteImageRecord= {this.deleteImageRecord}
-          addImageRecord={this.addImageRecord}
-        />
+         />
       </div>
 
     );
