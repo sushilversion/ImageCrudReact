@@ -32,7 +32,8 @@ const DisplayListComponent = ({ imageList, deleteImageRecord }) => (
   <div>
     <div className="row">
         {/* <button className="button normal-button" onClick={addImageRecord}></button> */}
-        <Link to={"/create"}  className="btn btn-primary" >Add Record</Link>
+        
+        {true && <Link to={"/create"}  className="btn btn-primary" >Add Record</Link>}
 
         {/* <Link to='/add-record'>Add Record</Link> */}
 
