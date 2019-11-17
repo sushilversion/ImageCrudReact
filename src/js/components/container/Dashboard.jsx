@@ -31,23 +31,7 @@ class Dashboard extends React.Component {
     
 
   }
-  // editImageRecord(event) {
-  //   console.log(event);
-
-  // }
-
-  // addImageRecord(event) {
-  //   console.log('Add Image Invoked');
-    
-  //   console.log(event);
-
-  //   // this.setState({openAddRoute:true})
-
-  //   // return <Redirect to="/dashboard" />;
-
-  // }
-
-
+  
   componentDidMount() {
     const { currentUser } = this.state;
    // userService.getById(currentUser.id).then(userFromApi => this.setState({ userFromApi }));

@@ -34,6 +34,7 @@ class CreateComponent extends React.Component {
         this._onEndDate = this._onEndDate.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.close=this.close.bind(this);
 
         this.onChangeTitle=this.onChangeTitle.bind(this);
 
@@ -115,9 +116,12 @@ class CreateComponent extends React.Component {
         //TODO: Validation for records
         productService.pushRecord(record);
         // history.goBack;
-        this.props.history.goBack();
+        close();
     }
 
+    close(e) {
+        this.props.history.goBack();
+    }
 
     render() {
         //  const { currentUser, userFromApi } = this.state;
@@ -130,6 +134,10 @@ class CreateComponent extends React.Component {
 
             <div style={{ marginTop: 10 }}>
                 <h3 align="center">Add new Banner</h3>
+                <div className="row">
+                <button className="btn btn-danger ml-3 " onClick={this.close} >Back</button>
+
+                    </div>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Select Position:  </label>
@@ -143,6 +151,8 @@ class CreateComponent extends React.Component {
                             className="form-control"
                             
                             onChange={this.onChangeTitle}
+                            required="true"
+                            
                         />
                     </div>
                     <div className="form-group">
@@ -173,6 +183,7 @@ class CreateComponent extends React.Component {
                         <input type="file" name="myImage"
                             onChange={this.onDrop}
                             className="form-control"
+                            required="true"
                         />
                         {/* <ImageUploader
                 withIcon={true}
@@ -186,6 +197,8 @@ class CreateComponent extends React.Component {
                         <input type="submit"
                             value="Submit"
                             className="btn btn-primary" />
+                                     
+
                     </div>
                 </form>
             </div>
