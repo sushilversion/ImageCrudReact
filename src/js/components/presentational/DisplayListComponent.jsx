@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const renderTableData = ({ imageList, deleteImageRecord }) => (
 
   imageList.map((record, index) => {
-    const { pos, title, status, startDate, endDate , picture} = record //destructuring
+    const { pos, title, status, startDate, endDate , name} = record //destructuring
     return (
       <tr key={pos}>
         <td>{pos}</td>
@@ -14,7 +14,7 @@ const renderTableData = ({ imageList, deleteImageRecord }) => (
         <td>{status}</td>
         <td>{startDate}</td>
         <td>{endDate}</td>
-        <td>{picture}</td>
+        <td>{name}</td>
 
         
         <td>
@@ -71,7 +71,7 @@ DisplayListComponent.propTypes = {
     status: PropTypes.string,
     startDate: PropTypes.string,
     endDate: PropTypes.string,
-    picture: PropTypes.string
+    name: PropTypes.string
 
   })).isRequired,
   deleteImageRecord: PropTypes.func.isRequired,

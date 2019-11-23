@@ -47,7 +47,12 @@ function getAllStatus() {
 function getAll() {
     // const requestOptions = { method: 'GET', headers: authHeader() };
     // return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
-    return imageRecordList;
+    return imageRecordList.map((item)=>{
+        const { picture, ...noPicture } = item;
+        return noPicture;
+    });
+
+
 }
 function pushRecord(record) {
     const pos=record.pos;
@@ -61,9 +66,36 @@ function pushRecord(record) {
    
     positions.splice( positionvalues.indexOf(pos),1);
 
-    imageRecordList.push(record);
-    //TODO: api calls for update for records
+    console.log(record.picture);
+    
+    
+    let item=record;
+    item.name=record.picture.name;
+    
 
+    getBase64(record.picture, (result) => {
+        // idCardBase64 = result;
+         item.picture=result;
+         console.log("Base 64: "+item.picture);
+         
+
+        imageRecordList.push(record);
+       //TODO: api calls for update for records
+
+         
+    });
+}
+
+function getBase64(file, cb) {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        cb(reader.result)
+    };
+    reader.onerror = function (error) {
+        console.log('Error: ', error);
+        
+    };
 }
 
 function getById(id) {

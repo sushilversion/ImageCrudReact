@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { productService } from '../../_services/product.service';
 
+
 //import ImageUploader from 'react-images-upload';
 
 
@@ -37,7 +38,7 @@ class CreateComponent extends React.Component {
         this.close=this.close.bind(this);
 
         this.onChangeTitle=this.onChangeTitle.bind(this);
-
+      //  this.getBase64=this.getBase64.bind(this);
     }
     onChangeTitle(event){
         this.setState({title:event.target.value});
@@ -47,11 +48,41 @@ class CreateComponent extends React.Component {
         // this.setState({
         //     pictures: this.state.pictures.concat(picture),
         // });
-        console.log(picture.target.files[0].name);
+       // console.log(picture.target.files[0]);
+        //console.log(picture);
 
-        this.setState({ picture: picture.target.files[0].name });
+        // base64Img.base64(picture.target.files[0].name,(err,data)=>{
+        //         if(err){
+        //             console.log(err);
+        //            return; 
+        //         }
+        //         console.log(data);
+                
+        // });
+
+
+    //     this.getBase64(picture.target.files[0], (result) => {
+    //        // idCardBase64 = result;
+    //         console.log(result);
+            
+    //    });
+
+        this.setState({ picture: picture.target.files[0] });
 
     }
+
+    // getBase64(file, cb) {
+    //     let reader = new FileReader();
+    //     reader.readAsDataURL(file);
+    //     reader.onload = function () {
+    //         cb(reader.result)
+    //     };
+    //     reader.onerror = function (error) {
+    //         console.log('Error: ', error);
+            
+    //     };
+    // }
+
     componentDidMount() {
         const positions=productService.getAllPositions();
         const statuslist =productService.getAllStatus();

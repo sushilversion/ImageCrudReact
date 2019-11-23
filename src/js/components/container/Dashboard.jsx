@@ -36,6 +36,10 @@ class Dashboard extends React.Component {
     const { currentUser } = this.state;
    // userService.getById(currentUser.id).then(userFromApi => this.setState({ userFromApi }));
    //productService.getAll().then(imageRecordList => this.setState({ imageRecordList }))
+
+   console.log(productService.getAll());
+   
+
    this.setState({imageRecordList:productService.getAll()});
    this.setState({positionAvailable: (productService.getAllPositions().length>0)?true:false})
 
