@@ -8,25 +8,23 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { productService } from '../../_services/product.service';
 
-
-//import ImageUploader from 'react-images-upload';
-
-
-
 class CreateComponent extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            positions:[],
-            statuslist:[],
+            positions: [],
+            statuslist: [],
             pos: -1,
-            title:'',
-            status:'',
+            title: '',
+            status: '',
             startDate: new Date(),
             endDate: new Date(),
             // pictures: [],
-            picture: null
+            picture: null,
+            errors: {
+                picture: '',
+            }
         };
 
         this._onSelectPos = this._onSelectPos.bind(this);
@@ -35,119 +33,126 @@ class CreateComponent extends React.Component {
         this._onEndDate = this._onEndDate.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.close=this.close.bind(this);
-
-        this.onChangeTitle=this.onChangeTitle.bind(this);
-      //  this.getBase64=this.getBase64.bind(this);
+        this.close = this.close.bind(this);
+        this.onChangeTitle = this.onChangeTitle.bind(this);
+        this.validateAndUpload = this.validateAndUpload.bind(this);
+        this.validateForm= this.validateForm.bind(this);
     }
-    onChangeTitle(event){
-        this.setState({title:event.target.value});
+    onChangeTitle(event) {
+        this.setState({ title: event.target.value });
 
     }
-    onDrop(picture) {
-        // this.setState({
-        //     pictures: this.state.pictures.concat(picture),
-        // });
-       // console.log(picture.target.files[0]);
-        //console.log(picture);
+    onDrop(event) {
+        //  validation for Image Type
+        this.validateAndUpload(event.target.files[0], (picture) => {
+            if (picture) {
+                this.setState({ picture });
+                this.setState({errors:{picture:''}})
 
-        // base64Img.base64(picture.target.files[0].name,(err,data)=>{
-        //         if(err){
-        //             console.log(err);
-        //            return; 
-        //         }
-        //         console.log(data);
-                
-        // });
+            }
+            else {
+                this.setState({errors:{picture:'Not a valid  image.'}})
+            }
 
+        });
 
-    //     this.getBase64(picture.target.files[0], (result) => {
-    //        // idCardBase64 = result;
-    //         console.log(result);
-            
-    //    });
-
-        this.setState({ picture: picture.target.files[0] });
 
     }
 
-    // getBase64(file, cb) {
-    //     let reader = new FileReader();
-    //     reader.readAsDataURL(file);
-    //     reader.onload = function () {
-    //         cb(reader.result)
-    //     };
-    //     reader.onerror = function (error) {
-    //         console.log('Error: ', error);
-            
-    //     };
-    // }
+    // TODO- Move to Util/Common Function
+    validateAndUpload(file, callback) {
+        var URL = window.URL || window.webkitURL;
+
+        if (file) {
+            var image = new Image();
+
+            image.onload = function () {
+                console.log(this.width);
+
+                if (this.width) {
+                    console.log('Image.w', this.width);
+                    console.log('Image.h', this.height);
+                    callback(file);
+                }
+            };
+            image.onerror = () => {
+                // console.log('error on image');
+                callback(null);
+
+            }
+
+            image.src = URL.createObjectURL(file);
+        }
+    }
 
     componentDidMount() {
-        const positions=productService.getAllPositions();
-        const statuslist =productService.getAllStatus();
-        this.setState({positions});
-        this.setState({statuslist });
+        const positions = productService.getAllPositions();
+        const statuslist = productService.getAllStatus();
+        this.setState({ positions });
+        this.setState({ statuslist });
 
-        this.setState({pos:positions[0].value});
-        this.setState({status:statuslist[0].value});
-        //  userService.getById(currentUser.id).then(userFromApi => this.setState({ userFromApi }));
+        this.setState({ pos: positions[0].value });
+        this.setState({ status: statuslist[0].value });
     }
 
     //for dropdown position
     _onSelectPos(event) {
         console.log(event);
-        
-        this.setState({pos:event.value});
+
+        this.setState({ pos: event.value });
 
     }
 
     //for dropdown status
-    _onSelectStatus(statusval) {
-        this.setState({status:statusval});
+    _onSelectStatus(status) {
+        this.setState({ status });
     }
 
     _onStartDate(startDate) {
-        // console.log('Startdate',startDate);
-        // console.log('StartdateString',startDate.toLocaleDateString());
-        
-        this.setState({ startDate });
 
+        this.setState({ startDate });
 
     }
     _onEndDate(endDate) {
-        this.setState({ endDate});
+        this.setState({ endDate });
 
     }
 
-
     onSubmit(e) {
         e.preventDefault();
-        const record={ "pos": this.state.pos, 
-        "title": this.state.title,
-         "status": this.state.status,
-          "startDate": this.state.startDate.toLocaleDateString(),
-           "endDate": this.state.endDate.toLocaleDateString(),
-            "picture": this.state.picture};
 
-       
-        // const formData = new FormData();
-        // formData.append('myImage', this.state.picture);
-        // const config = {
-        //     headers: {
-        //         'content-type': 'multipart/form-data'
-        //     }
-        // };
-        // axios.post("/upload",formData,config)
-        //     .then((response) => {
-        //         alert("The file is successfully uploaded");
-        //     }).catch((error) => {
-        // });
-        console.log('onSubmit Invoked: ',record);
-        //TODO: Validation for records
-        productService.pushRecord(record);
-        // history.goBack;
-        this.close();
+        if (this.validateForm(this.state.errors)) {
+            console.info('Valid Form')
+
+            const record = {
+                "pos": this.state.pos,
+                "title": this.state.title,
+                "status": this.state.status,
+                "startDate": this.state.startDate.toLocaleDateString(),
+                "endDate": this.state.endDate.toLocaleDateString(),
+                "picture": this.state.picture
+            };
+            console.log('onSubmit Invoked: ', record);
+            //TODO: Validation for records
+            productService.pushRecord(record);
+            // history.goBack;
+            this.close();
+        } else {
+            console.error('Invalid Form')
+        }
+
+
+    }
+
+    validateForm (errors) {
+        console.log(errors);
+        
+        let valid = true;
+        Object.values(errors).forEach(
+            // if we have an error string set valid to false
+            (val) => val.length > 0 && (valid = false)
+        );
+        return valid;
     }
 
     close(e) {
@@ -155,20 +160,17 @@ class CreateComponent extends React.Component {
     }
 
     render() {
-        //  const { currentUser, userFromApi } = this.state;
        
-
-        //this.setState({pos:defaultPosition})
-       // const defaultStatus = status[0] //set for next available pos
+        const {errors} = this.state;
 
         return (
 
             <div style={{ marginTop: 10 }}>
                 <h3 align="center">Add new Banner</h3>
                 <div className="row">
-                <button className="btn btn-danger ml-3 " onClick={this.close} >Back</button>
+                    <button className="btn btn-danger ml-3 " onClick={this.close} >Back</button>
 
-                    </div>
+                </div>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Select Position:  </label>
@@ -180,10 +182,10 @@ class CreateComponent extends React.Component {
                         <input
                             type="text"
                             className="form-control"
-                            
+
                             onChange={this.onChangeTitle}
                             required="true"
-                            
+
                         />
                     </div>
                     <div className="form-group">
@@ -216,21 +218,15 @@ class CreateComponent extends React.Component {
                             className="form-control"
                             required="true"
                         />
-                        {/* <ImageUploader
-                withIcon={true}
-                buttonText='Choose images'
-                onChange={this.onDrop}
-                imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                maxFileSize={5242880}
-            /> */}
+                      
                     </div>
                     <div className="form-group">
                         <input type="submit"
                             value="Submit"
                             className="btn btn-primary" />
-                                     
-
                     </div>
+                    {errors.picture.length>0 && 
+                            <span className='error'>{errors.picture}</span>}
                 </form>
             </div>
         );
