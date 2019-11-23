@@ -116,7 +116,7 @@ class CreateComponent extends React.Component {
         //TODO: Validation for records
         productService.pushRecord(record);
         // history.goBack;
-        close();
+        this.close();
     }
 
     close(e) {
