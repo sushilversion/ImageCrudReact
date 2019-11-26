@@ -19,7 +19,12 @@ const renderTableData = ({ imageList, deleteImageRecord }) => (
         
         <td>
 
-          <Link to={"/edit"} className="btn btn-primary ml-3">Edit</Link>
+          <Link to={{
+  pathname: '/edit',
+  state: {
+    fromNotifications: true
+  }
+}} className="btn btn-primary ml-3">Edit</Link>
           <button className="btn btn-danger ml-3 " onClick={deleteImageRecord}>Delete</button>
         
         </td>
